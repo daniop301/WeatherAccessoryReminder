@@ -73,7 +73,7 @@ public class WeatherWidget extends AsyncTask<String, Void, String> {
                         jsonReader.beginArray();
                         jsonReader.beginObject();
                         //Build weather object
-                        weather = new Weather(true,false,false,false);
+                        weather = new Weather(true,true,false,false);
                         break;
 //                        while (jsonReader.hasNext()) {
 //                            String key2 = jsonReader.nextName();
