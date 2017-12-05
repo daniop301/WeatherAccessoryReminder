@@ -109,7 +109,7 @@ public class ActivityAggregator {
             {
                 currentActivityWalking = fDistribution[0] > 0.5;
 
-                if (currentActivityWalking == true)
+                if (currentActivityWalking)
                 {
                     //check for the location and compare it with the saved home location
                     Location currentLocation = locationWidget.getLastBestLocation();
@@ -121,7 +121,6 @@ public class ActivityAggregator {
                         mainActivity.userLeaving(distance);
                     }
                 }
-
             }
         } catch (Exception e) {
             //e.printStackTrace();
