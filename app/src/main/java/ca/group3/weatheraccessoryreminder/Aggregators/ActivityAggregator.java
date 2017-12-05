@@ -36,11 +36,11 @@ public class ActivityAggregator {
 
     private boolean currentActivityWalking = false;
 
-    public ActivityAggregator(SensorManager sensorManager, LocationManager locationManager, MainActivity mainActivity)
+    public ActivityAggregator(SensorManager sensorManager, LocationManager locationManager, MainActivity mainActivity, float homeLatitude, float homeLongitude)
     {
         homeLocation = new Location("Home location");
-        homeLocation.setLatitude(56.173);
-        homeLocation.setLongitude(10.189);
+        homeLocation.setLatitude(homeLatitude); //56.173
+        homeLocation.setLongitude(homeLongitude); //10.189
 
         createAttributes();
         this.accelerometerWidget = new AccelerometerWidget(sensorManager, this);
@@ -76,6 +76,11 @@ public class ActivityAggregator {
         fvWekaAttributes.addElement(Attribute2);
         fvWekaAttributes.addElement(Attribute3);
         fvWekaAttributes.addElement(Attribute4);
+    }
+
+    public void setCurrentLocationAsHome()
+    {
+        this.homeLocation = this.locationWidget.getLastBestLocation();
     }
 
     public void accelDataReceived( double min, double max, double sd )

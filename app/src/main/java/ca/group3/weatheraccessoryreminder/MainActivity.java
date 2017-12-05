@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -41,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        activityAggregator = new ActivityAggregator(sensorManager, locationManager, this);
+        activityAggregator = new ActivityAggregator(sensorManager, locationManager, this, (float)56.173, (float)10.189);
 
         button = findViewById(R.id.buttonRecord);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                activityAggregator.setCurrentLocationAsHome();
+            }
+        });
     }
 
     public void userLeaving(float distance)
