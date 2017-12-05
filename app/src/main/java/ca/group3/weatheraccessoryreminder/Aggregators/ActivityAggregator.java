@@ -9,6 +9,7 @@ import java.io.File;
 
 import ca.group3.weatheraccessoryreminder.MainActivity;
 import ca.group3.weatheraccessoryreminder.Widgets.AccelerometerWidget;
+import ca.group3.weatheraccessoryreminder.Widgets.CalendarWidget;
 import ca.group3.weatheraccessoryreminder.Widgets.LocationWidget;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
@@ -28,6 +29,7 @@ public class ActivityAggregator {
 
     private AccelerometerWidget accelerometerWidget;
     private LocationWidget locationWidget;
+    private CalendarWidget calendarWidget;
 
     public Location homeLocation;
 
@@ -45,6 +47,7 @@ public class ActivityAggregator {
         createAttributes();
         this.accelerometerWidget = new AccelerometerWidget(sensorManager, this);
         this.locationWidget = new LocationWidget(locationManager, mainActivity);
+        this.calendarWidget = new CalendarWidget();
 
         this.mainActivity = mainActivity;
 
@@ -111,12 +114,11 @@ public class ActivityAggregator {
                     Location currentLocation = locationWidget.getLastBestLocation();
 
                     float distance = homeLocation.distanceTo(currentLocation);
-                    if (distance < 1000) //1 km away from home
+                    boolean upcomingCalendarEvents = calendarWidget.areEventsInNextHours(3);
+                    if (distance < 1000 && upcomingCalendarEvents) //1 km away from home and calendar events coming up.
                     {
                         mainActivity.userLeaving(distance);
                     }
-
-                    //check for calendar data
                 }
 
             }

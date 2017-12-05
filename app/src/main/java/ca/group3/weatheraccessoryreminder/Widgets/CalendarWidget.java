@@ -5,4 +5,13 @@ package ca.group3.weatheraccessoryreminder.Widgets;
  */
 
 public class CalendarWidget {
+    public CalendarWidget()
+    {
+
+    }
+
+    public boolean areEventsInNextHours(int numberOfHours)
+    {
+        return true;
+    }
 }
