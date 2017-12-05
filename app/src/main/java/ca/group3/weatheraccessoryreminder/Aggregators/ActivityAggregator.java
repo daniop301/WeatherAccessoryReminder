@@ -1,13 +1,15 @@
 package ca.group3.weatheraccessoryreminder.Aggregators;
 
-import android.app.Activity;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Environment;
 
 import java.io.File;
 
 import ca.group3.weatheraccessoryreminder.MainActivity;
 import ca.group3.weatheraccessoryreminder.Widgets.AccelerometerWidget;
+import ca.group3.weatheraccessoryreminder.Widgets.LocationWidget;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
@@ -23,16 +25,29 @@ public class ActivityAggregator {
     private J48 classifier;
     private FastVector fvWekaAttributes;
     private Instance inst_co;
+
     private AccelerometerWidget accelerometerWidget;
+    private LocationWidget locationWidget;
+
+    private Location homeLocation;
+
+
     private MainActivity mainActivity;
 
     private boolean currentActivityWalking = false;
 
-    public ActivityAggregator(SensorManager sensorManager, MainActivity mainActivity)
+    public ActivityAggregator(SensorManager sensorManager, LocationManager locationManager, MainActivity mainActivity)
     {
+        homeLocation = new Location("Home location");
+        homeLocation.setLatitude(56.173);
+        homeLocation.setLongitude(10.189);
+
         createAttributes();
-        accelerometerWidget = new AccelerometerWidget(sensorManager, this);
+        this.accelerometerWidget = new AccelerometerWidget(sensorManager, this);
+        this.locationWidget = new LocationWidget(locationManager, mainActivity);
+
         this.mainActivity = mainActivity;
+
 
         try {
             File sdcard = Environment.getExternalStorageDirectory();
@@ -84,7 +99,21 @@ public class ActivityAggregator {
             if ( (fDistribution[0] > 0.5) != currentActivityWalking )
             {
                 currentActivityWalking = fDistribution[0] > 0.5;
-                mainActivity.activityChanged(currentActivityWalking);
+
+                if (currentActivityWalking == true)
+                {
+                    //check for the location and compare it with the saved home location
+                    Location currentLocation = locationWidget.getLastBestLocation();
+
+                    float distance = homeLocation.distanceTo(currentLocation);
+                    if (distance < 1000) //1 km away from home
+                    {
+                        mainActivity.userLeaving(distance);
+                    }
+
+                    //check for calendar data
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
