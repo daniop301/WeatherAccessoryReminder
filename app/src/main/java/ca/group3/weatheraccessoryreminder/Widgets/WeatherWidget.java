@@ -1,5 +1,6 @@
 package ca.group3.weatheraccessoryreminder.Widgets;
 
+import android.location.Location;
 import android.os.AsyncTask;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -21,7 +22,7 @@ import ca.group3.weatheraccessoryreminder.Weather;
 public class WeatherWidget extends AsyncTask<String, Void, String> {
     private String serverAddress =
             "http://api.openweathermap.org/data/2.5/forecast?q=Arhus,dk&cnt=1&units=metric&appid=ed10a84bb5fc776cbe29475746b5352c";
-    private String location;
+    private Location location;
     private boolean isRain, isSun;
     private boolean isSuccessful = true;
     private URL containerAPIEndpoint;
@@ -29,7 +30,7 @@ public class WeatherWidget extends AsyncTask<String, Void, String> {
     private ProgressDialog progressDialog;
     private Weather weather;
 
-    public WeatherWidget(MainActivity mainActivity, String location) {
+    public WeatherWidget(MainActivity mainActivity, Location location) {
         this.mainActivity = mainActivity;
         this.location = location;
         this.progressDialog = new ProgressDialog(mainActivity);

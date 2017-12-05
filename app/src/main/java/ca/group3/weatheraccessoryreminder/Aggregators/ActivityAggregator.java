@@ -1,5 +1,6 @@
 package ca.group3.weatheraccessoryreminder.Aggregators;
 
+import android.content.SharedPreferences;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -17,10 +18,6 @@ import weka.core.DenseInstance;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
-
-/**
- * Created by stefa on 12/5/2017.
- */
 
 public class ActivityAggregator {
     private J48 classifier;
@@ -81,9 +78,13 @@ public class ActivityAggregator {
         fvWekaAttributes.addElement(Attribute4);
     }
 
-    public void setCurrentLocationAsHome()
+    public void setCurrentLocationAsHome(SharedPreferences sharedPreferences)
     {
         this.homeLocation = this.locationWidget.getLastBestLocation();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("homeLat", (float) homeLocation.getLatitude());
+        editor.putFloat("homeLon", (float) homeLocation.getLongitude());
+        editor.commit();
     }
 
     public void accelDataReceived( double min, double max, double sd )
