@@ -1,6 +1,7 @@
 package ca.group3.weatheraccessoryreminder;
 
 import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -118,15 +119,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void weatherDataReceived(Weather weather) {
-        Drawable drawable = ContextCompat.getDrawable(this,R.drawable.rain);
+        String notificationText = "Undefined weather status";
+
+        if (weather.isRain && weather.isWind)
+        {
+            notificationText = "Expect rain and wind. Take a raincoat with you!";
+        }
+        else if (weather.isRain)
+        {
+            notificationText = "Rain is coming. Take an umbrella with you!";
+        }
+        else if (weather.isSnow)
+        {
+            notificationText = "Snowing outside today. Remember your boots!";
+        }
+        else if (weather.isSun)
+        {
+            notificationText = "Sky will clear up! Sunglasses are a must!";
+        }
+
+        Drawable drawable = ContextCompat.getDrawable(this,R.drawable.rainsun);
 
         Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setLargeIcon(bitmap)
-                        .setSmallIcon(R.drawable.rain)
+                        .setSmallIcon(R.drawable.rainsun)
                         .setContentTitle("Weather alert")
-                        .setContentText("sdf");
+                        .setContentText(notificationText)
+                        .setDefaults(Notification.DEFAULT_SOUND);
 
 
         int mNotificationId = 001;
