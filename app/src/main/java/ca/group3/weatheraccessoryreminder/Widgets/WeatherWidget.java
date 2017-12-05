@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ca.group3.weatheraccessoryreminder.MainActivity;
+import ca.group3.weatheraccessoryreminder.Weather;
 
 public class WeatherWidget extends AsyncTask<String, Void, String> {
     private String serverAddress =
@@ -113,21 +114,7 @@ public class WeatherWidget extends AsyncTask<String, Void, String> {
         progressDialog.dismiss();
         if (isSuccessful) {
             Toast.makeText(mainActivity, "Success",Toast.LENGTH_LONG).show();
-            if (weather != null & weather.isRain) {
-                //mainActivity.sendNotification("Better take an umbrella!");
-            }
-            //buildErrorDialog();
+            mainActivity.weatherDataReceived(weather);
         }
-    }
-}
-
-class Weather {
-    boolean isRain, isWind, isSun, isSnow;
-
-    public Weather(boolean isRain, boolean isWind, boolean isSun , boolean isSnow) {
-        this.isRain = isRain;
-        this.isWind = isWind;
-        this.isSun = isSun;
-        this.isSnow = isSnow;
     }
 }

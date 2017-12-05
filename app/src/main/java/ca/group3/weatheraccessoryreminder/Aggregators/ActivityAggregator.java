@@ -29,7 +29,7 @@ public class ActivityAggregator {
     private AccelerometerWidget accelerometerWidget;
     private LocationWidget locationWidget;
 
-    private Location homeLocation;
+    public Location homeLocation;
 
 
     private MainActivity mainActivity;
@@ -54,7 +54,7 @@ public class ActivityAggregator {
             classifier = (J48) weka.core.SerializationHelper.read(sdcard.getAbsolutePath() + "/accelData/" + "walkRestModel.model");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         };
     }
 
@@ -116,7 +116,7 @@ public class ActivityAggregator {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }

@@ -1,24 +1,29 @@
 package ca.group3.weatheraccessoryreminder;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import ca.group3.weatheraccessoryreminder.Aggregators.ActivityAggregator;
+import ca.group3.weatheraccessoryreminder.Widgets.WeatherWidget;
 
 
 public class MainActivity extends AppCompatActivity {
-
-
     private static final String TAG = "Permissions";
     private Button button;
     private TextView tvData;
@@ -49,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     {
         Log.d("Window", "User leaving");
         tvData.setText("Distance: " + distance);
+        WeatherWidget ww = new WeatherWidget(this, activityAggregator.homeLocation.toString());
+        ww.execute();
     }
 
     public boolean isStoragePermissionGranted() {
@@ -106,5 +113,23 @@ public class MainActivity extends AppCompatActivity {
             Log.v(TAG,"Permission is granted");
             return true;
         }
+    }
+
+    public void weatherDataReceived(Weather weather) {
+        Drawable drawable = ContextCompat.getDrawable(this,R.drawable.rain);
+
+        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setLargeIcon(bitmap)
+                        .setSmallIcon(R.drawable.rain)
+                        .setContentTitle("Weather alert")
+                        .setContentText("sdf");
+
+
+        int mNotificationId = 001;
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 }
